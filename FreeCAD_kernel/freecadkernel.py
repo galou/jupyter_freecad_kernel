@@ -12,7 +12,12 @@ class FreeCADKernel(Kernel):
     def start(self):
         Kernel.start(self)
         self.do_execute("%gui qt", False)
-        sys.path.append("/usr/lib/freecad/lib/")
+        if os.path.exists('/usr/lib/freecad/lib/'):
+            sys.path.append('/usr/lib/freecad/lib/')
+        elif os.path.exists('/usr/lib/freecad-daily/lib/'):
+            sys.path.append('/usr/lib/freecad-daily/lib/')
+        else:
+            raise RuntimeError('Cannot find FreeCAD libraries')
         import FreeCADGui
         self.win = FreeCADGui.showMainWindow()
 
